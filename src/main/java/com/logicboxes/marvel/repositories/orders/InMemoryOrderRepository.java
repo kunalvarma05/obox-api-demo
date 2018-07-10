@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 @Component
 public class InMemoryOrderRepository implements OrderRepository
 {
+    private static long NEW_ID = 9;
+
     private static Map<Long, Order> orders = new HashMap<>();
 
     static
@@ -85,9 +87,12 @@ public class InMemoryOrderRepository implements OrderRepository
     }
 
     @Override
-    public Order add(Order order)
+    public Order add(long user_id, long expiry)
     {
-        orders.put(order.getId(), order);
+        Order order = new Order(NEW_ID, user_id, expiry);
+        orders.put(NEW_ID, order);
+        ++NEW_ID;
         return order;
     }
+
 }

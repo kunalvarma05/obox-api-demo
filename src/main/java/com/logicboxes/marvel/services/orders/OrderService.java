@@ -37,8 +37,8 @@ public class OrderService
         return this.orderRepository.renew(id, expiry);
     }
 
-    public Order addOrder(Order order)
+    public Order addOrder(long user_id, long expiry)
     {
-        return this.orderRepository.add(order);
+        return this.orderRepository.add(user_id, expiry);
     }
 }

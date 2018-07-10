@@ -19,8 +19,6 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/orders")
 public class OrdersController
 {
-    private static long NEW_ID = 9;
-
     private OrderService orderService;
 
     public OrdersController(OrderService orderService)
@@ -38,11 +36,7 @@ public class OrdersController
     @RequestMapping(method = POST)
     public ResponseEntity<?> addOrder(@RequestBody AddOrderRequest request)
     {
-        Order order = new Order(NEW_ID, request.getUser_id(), request.getExpiry());
-        Order createdOrder = this.orderService.addOrder(order);
-
-        ++NEW_ID;
-
+        Order createdOrder = this.orderService.addOrder(request.getUser_id(), request.getExpiry());
         return ResponseEntity.ok(createdOrder);
     }
 

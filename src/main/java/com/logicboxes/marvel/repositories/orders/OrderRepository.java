@@ -19,5 +19,5 @@ public interface OrderRepository
 
     Order renew(long id, long expiry) throws OrderNotFoundException;
 
-    Order add(Order order);
+    Order add(long user_id, long expiry);
 }
