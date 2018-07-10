@@ -35,7 +35,7 @@ public class OrdersController
         return ResponseEntity.ok(order);
     }
 
-    @RequestMapping(value = "/", method = POST)
+    @RequestMapping(method = POST)
     public ResponseEntity<?> addOrder(@RequestBody AddOrderRequest request)
     {
         Order order = new Order(NEW_ID, request.getUser_id(), request.getExpiry());
