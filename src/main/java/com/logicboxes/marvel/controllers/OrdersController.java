@@ -2,6 +2,7 @@ package com.logicboxes.marvel.controllers;
 
 import com.logicboxes.marvel.exceptions.OrderNotFoundException;
 import com.logicboxes.marvel.models.Order;
+import com.logicboxes.marvel.requests.AddOrderRequest;
 import com.logicboxes.marvel.requests.RenewRequest;
 import com.logicboxes.marvel.services.orders.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 @RequestMapping("/orders")
 public class OrdersController
 {
+    private static long NEW_ID = 9;
+
     private OrderService orderService;
 
     public OrdersController(OrderService orderService)
@@ -33,9 +36,13 @@ public class OrdersController
     }
 
     @RequestMapping(value = "/", method = POST)
-    public ResponseEntity<?> addOrder(@RequestBody Order order)
+    public ResponseEntity<?> addOrder(@RequestBody AddOrderRequest request)
     {
+        Order order = new Order(NEW_ID, request.getUser_id(), request.getExpiry());
         Order createdOrder = this.orderService.addOrder(order);
+
+        ++NEW_ID;
+
         return ResponseEntity.ok(createdOrder);
     }
 
