@@ -4,18 +4,19 @@ import com.logicboxes.marvel.exceptions.OrderNotFoundException;
 import com.logicboxes.marvel.models.Order;
 import com.logicboxes.marvel.requests.AddOrderRequest;
 import com.logicboxes.marvel.requests.RenewRequest;
+import com.logicboxes.marvel.responses.ErrorResponse;
 import com.logicboxes.marvel.services.orders.OrderService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @Controller
+@ControllerAdvice
 @RequestMapping("/orders")
 public class OrdersController
 {
@@ -60,5 +61,12 @@ public class OrdersController
     {
         List<Order> orders = this.orderService.getOrdersByUserID(user_id);
         return ResponseEntity.ok(orders);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleOrderNotFoundException(OrderNotFoundException e)
+    {
+        ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }
